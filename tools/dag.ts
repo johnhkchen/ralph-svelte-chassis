@@ -147,6 +147,85 @@ function scanDocuments(dir: string): Map<string, Frontmatter> {
 }
 
 // =============================================================================
+// Story Parsing and Validation
+// =============================================================================
+
+interface StoryParseResult {
+  frontmatter: Frontmatter;
+  description: string;
+  filePath: string;
+  fileName: string;
+}
+
+interface StoryValidationError {
+  file: string;
+  field: string;
+  message: string;
+}
+
+function validateStoryFrontmatter(fm: any, fileName: string): StoryValidationError[] {
+  const errors: StoryValidationError[] = [];
+
+  // Required fields
+  if (!fm.id) {
+    errors.push({ file: fileName, field: 'id', message: 'Missing required field: id' });
+  } else if (typeof fm.id !== 'string') {
+    errors.push({ file: fileName, field: 'id', message: 'id must be a string' });
+  }
+
+  if (!fm.title) {
+    errors.push({ file: fileName, field: 'title', message: 'Missing required field: title' });
+  }
+
+  if (fm.priority === undefined || fm.priority === null) {
+    errors.push({ file: fileName, field: 'priority', message: 'Missing required field: priority' });
+  } else if (typeof fm.priority !== 'number' || fm.priority < 0 || fm.priority > 5) {
+    errors.push({ file: fileName, field: 'priority', message: 'priority must be a number between 0 and 5' });
+  }
+
+  return errors;
+}
+
+function scanStories(dir: string): { stories: StoryParseResult[]; errors: StoryValidationError[] } {
+  const stories: StoryParseResult[] = [];
+  const errors: StoryValidationError[] = [];
+
+  if (!existsSync(dir)) {
+    return { stories, errors };
+  }
+
+  const files = readdirSync(dir).filter((f) => f.endsWith('.md'));
+
+  for (const fileName of files) {
+    const filePath = join(dir, fileName);
+    const content = readFileSync(filePath, 'utf8');
+    const fm = extractFrontmatter(content);
+
+    if (!fm) {
+      errors.push({ file: fileName, field: 'frontmatter', message: 'Could not parse frontmatter' });
+      continue;
+    }
+
+    const validationErrors = validateStoryFrontmatter(fm, fileName);
+    if (validationErrors.length > 0) {
+      errors.push(...validationErrors);
+      continue;
+    }
+
+    const description = extractDescription(content);
+
+    stories.push({
+      frontmatter: fm,
+      description,
+      filePath: `docs/active/stories/${fileName}`,
+      fileName,
+    });
+  }
+
+  return { stories, errors };
+}
+
+// =============================================================================
 // Ticket Parsing and Validation
 // =============================================================================
 
@@ -706,15 +785,18 @@ function cmdRefresh(): void {
   console.log('📄 Scanning documents...');
   console.log('');
 
-  // Scan stories (for metadata only - status is derived from tickets)
-  const storyDocs = scanDocuments(STORIES_DIR);
+  // Scan stories
+  const { stories: storyFiles, errors: storyErrors } = scanStories(STORIES_DIR);
   console.log(`Stories (${STORIES_DIR.replace(process.cwd(), '.')}/):`);
-  if (storyDocs.size === 0) {
-    console.log('  (none found)');
+  if (storyFiles.length === 0 && storyErrors.length === 0) {
+    console.log('  (none)');
   } else {
-    const files = readdirSync(STORIES_DIR).filter((f) => f.endsWith('.md'));
-    for (const file of files) {
-      console.log(`  ✓ ${file}`);
+    for (const story of storyFiles) {
+      console.log(`  ✓ ${story.fileName}`);
+    }
+    for (const err of storyErrors) {
+      console.log(`  ✗ ${err.file}: ${err.message}`);
+      errors.push(`${err.file}: ${err.message}`);
     }
   }
   console.log('');
@@ -767,14 +849,25 @@ function cmdRefresh(): void {
   // Generate edges from tickets (the ONLY source of edges)
   const allEdges = generateEdgesFromTickets(tickets);
 
+  // Generate stories from story files
+  const allStories = storyFiles.map(storyFile => {
+    const fm = storyFile.frontmatter;
+    const status = deriveStoryStatus(fm.id, tickets);
+
+    return {
+      id: fm.id,
+      title: fm.title,
+      description: storyFile.description || `See ${storyFile.filePath} for details.`,
+      status: status,
+      priority: fm.priority || 0,
+      path: storyFile.filePath,
+    };
+  });
+
   // Update the graph
   graph.nodes = allNodes;
   graph.edges = allEdges;
-
-  // Update story statuses based on their tickets
-  for (const story of graph.stories) {
-    story.status = deriveStoryStatus(story.id, tickets);
-  }
+  graph.stories = allStories;
 
   // Check for cycles in the new graph
   const cycle = detectCycles(graph);
@@ -792,9 +885,10 @@ function cmdRefresh(): void {
   saveTaskGraph(graph);
 
   // Report summary
-  console.log(`Summary: ${storyDocs.size} stories, ${tickets.length} tickets processed`);
+  console.log(`Summary: ${storyFiles.length} stories, ${tickets.length} tickets processed`);
   console.log('');
   console.log('Generated:');
+  console.log(`  ${allStories.length} stories from story files`);
   console.log(`  ${allNodes.length} nodes from tickets`);
   console.log(`  ${allEdges.length} edges from ticket dependencies`);
   console.log('');

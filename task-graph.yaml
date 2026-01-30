@@ -2,124 +2,35 @@ version: "1.0"
 last_updated: "2026-01-30"
 milestones:
   - id: M1
-    title: DAG Introspection
-    description: just dag-status shows real data from task-graph.yaml
-    status: complete
+    title: Concept Defined
+    description: We know what we're building and why
+    status: pending
   - id: M2
-    title: Frontmatter Scanning
-    description: just dag-refresh reads and validates document frontmatter
-    status: complete
+    title: Foundation Ready
+    description: Technical infrastructure is in place
+    status: pending
   - id: M3
-    title: Basic Prompt Generation
-    description: just prompt selects task and outputs usable prompt
-    status: complete
-  - id: M4
-    title: Task Lifecycle
-    description: Task claiming, completion, and recovery mechanisms
-    status: complete
-  - id: M5
-    title: Worktree Commands
-    description: just worktree-* commands for parallel development
-    status: complete
-  - id: M6
-    title: Ralph Loop
-    description: just ralph runs autonomous agent loop
-    status: complete
-  - id: M7
-    title: Solar Engine
-    description: Core sun position and sun hours calculations
-    status: complete
-  - id: M8
-    title: Location System
-    description: Geocoding, coordinate handling, and location UI
-    status: complete
-  - id: M9
-    title: Application Integration
-    description: Results page displaying sun data for a location
-    status: complete
-  - id: M10
-    title: Shade Modeling
-    description: Calculate effective sun hours accounting for obstacles
-    status: complete
-  - id: M11
-    title: Climate Integration
-    description: Frost dates, growing seasons, and hardiness zones
-    status: complete
+    title: MVP Complete
+    description: Core user journey works end-to-end
+    status: pending
 stories:
   - id: S-001
-    title: Audit Codebase (The Gauntlet)
-    status: pending
-    priority: 1
-    path: docs/active/stories/S-001-audit.md
-  - id: S-002
-    title: DAG Upkeep & Automation
-    status: pending
-    priority: 2
-    path: docs/active/stories/S-002-dag-upkeep.md
-nodes:
-  - id: T-001-02
-    title: Toolchain Verification
-    story: S-001
-    description: Verify that the development toolchain is fully functional with Bun and the new clean structure.
-    priority: 2
-    complexity: S
-    status: complete
-    assignee: null
-    completed_at: "2026-01-30T01:20:38.558Z"
-    path: docs/active/tickets/T-001-02-toolchain.md
-  - id: T-001-03
-    title: Agent Signature (Write Verification)
-    story: S-001
-    description: Prove effectively that the agent has write-access and can modify core project files without breaking them.
-    priority: 3
-    complexity: S
+    title: Project Ideation & Specification
+    description: Define what we're building. This is the design phase where we establish the project concept, technical approach, and user experience before writing any implementation code.
     status: ready
-    assignee: null
-    path: docs/active/tickets/T-001-03-signature.md
-  - id: T-002-02
-    title: Drift Detection
-    story: S-002
-    description: Implement drift detection to verify that `task-graph.yaml` matches the state of the filesystem.
-    priority: 3
-    complexity: S
-    status: pending
-    assignee: null
-    path: docs/active/tickets/T-002-02-drift-detection.md
-  - id: T-001-01
-    title: Inventory & Cleanup Verification
-    story: S-001
-    description: Verify that the codebase and documentation have been correctly scrubbed of "Solar-Sim" domain logic.
     priority: 1
-    complexity: S
-    status: ready
-    assignee: null
-    path: docs/active/tickets/T-001-01-inventory.md
-  - id: T-002-01
-    title: Automate Story Sync
-    story: S-002
-    description: Automate the synchronization of stories from the `docs/active/stories` directory to `task-graph.yaml`.
-    priority: 2
-    complexity: S
-    status: in-progress
-    assignee: null
-    path: docs/active/tickets/T-002-01-story-sync.md
-    claimed_at: "2026-01-30T01:24:27.391Z"
-edges:
-  - from: T-001-01
-    to: T-001-02
-  - from: T-001-02
-    to: T-001-03
-  - from: T-002-01
-    to: T-002-02
+    path: docs/active/stories/S-001-ideation.md
+nodes: []
+edges: []
 meta:
-  total_stories: 2
-  total_tasks: 5
-  total_milestones: 11
+  total_stories: 1
+  total_tasks: 0
+  total_milestones: 3
   by_status:
-    ready: 2
-    pending: 1
-    in_progress: 1
-    complete: 1
+    ready: 0
+    pending: 0
+    in_progress: 0
+    complete: 0
     blocked: 0
   by_priority: {}
   by_milestone: {}

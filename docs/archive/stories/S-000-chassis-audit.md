@@ -1,8 +1,9 @@
 ---
-id: S-001
-title: Audit Codebase (The Gauntlet)
-status: ready
+id: S-000-audit
+title: "[ARCHIVED] Chassis Audit (The Gauntlet)"
+status: complete
 priority: 1
+archived: true
 ---
 
 ## Objective

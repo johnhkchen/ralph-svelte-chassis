@@ -2,11 +2,12 @@
 id: T-002-01
 title: Automate Story Sync
 story: S-002
-status: ready
+status: complete
 priority: 2
 complexity: S
 type: task
 depends_on: []
+completed_at: "2026-01-30T01:26:16.279Z"
 ---
 
 ## Objective

@@ -1,6 +1,6 @@
 # CLAUDE.md - Agent Instructions
 
-This file provides instructions for Claude Code agents working on Solar-Sim.
+This file provides instructions for Claude Code agents working on this project.
 
 ## Quick Start
 
@@ -8,23 +8,18 @@ If you're a Claude agent starting fresh, read this section first.
 
 ### Project Overview
 
-Solar-Sim is a webapp for calculating sun hours and light categories for any location on Earth. But before implementing the app itself, we're building the **multi-agent development infrastructure** that enables concurrent autonomous development.
+This is a Ralph Svelte Chassis project that uses a multi-agent development workflow. The chassis provides infrastructure for concurrent autonomous development through task graphs, autonomous coding loops, and git worktree management.
 
 ### Key Files to Read
 
-1. `docs/specification.md` - Technical specification (living document)
-2. `docs/happy_path.md` - Target user experience
-3. `docs/active/ROADMAP.md` - Current progress and priorities
-4. `task-graph.yaml` - DAG of tasks (what to work on)
+1. `docs/active/ROADMAP.md` - Current progress and priorities
+2. `task-graph.yaml` - DAG of tasks (what to work on)
+3. `docs/specification.md` - Technical specification (if it exists)
+4. `docs/happy_path.md` - Target user experience (if it exists)
 
 ### Current Phase
 
-**Phase: Foundation & Tooling**
-
-We are implementing the multi-agent workflow tooling before the application itself:
-- Ralph Loop integration (`just ralph`)
-- DAG parsing and prompt generation (`just prompt`)
-- Git worktree management for parallel development
+Check `docs/active/ROADMAP.md` for the current phase and active work. Early in a project lifecycle, you'll likely be in the ideation phase defining what to build. Later phases involve implementation of the specification.
 
 ---
 
@@ -49,7 +44,7 @@ just worktree-new <name>    # Create new worktree
 just worktree-list          # List active worktrees
 just worktree-remove <name> # Remove a worktree
 
-# Development (once SvelteKit is initialized)
+# Development (once project is initialized)
 just install        # Install dependencies
 just dev            # Start dev server
 just build          # Production build
@@ -123,9 +118,9 @@ All story and ticket documents should include YAML frontmatter for DAG parsing. 
 
 The main branch should always be in a stable, working state. Feature branches follow the pattern `feature/*` with typically one branch per story, and research spikes that may not merge use `research/*`.
 
-Multiple agents can work simultaneously using Git worktrees. Run `just worktree-new ralph` to create a worktree at `../solar-sim-ralph` on a `feature/ralph` branch, then cd into it and work independently. Each worktree is an independent working directory that shares Git history with the main repo.
+Multiple agents can work simultaneously using Git worktrees. Run `just worktree-new <name>` to create a worktree at `../<repo-name>-<name>` on a `feature/<name>` branch, then cd into it and work independently. Each worktree is an independent working directory that shares Git history with the main repo.
 
-Commits follow the conventional format with a type, scope, and description. Types include feat, fix, docs, refactor, test, chore, and research. For example, `feat(solar): add sun position calculation module` or `docs(spec): update architecture diagram`.
+Commits follow the conventional format with a type, scope, and description. Types include feat, fix, docs, refactor, test, chore, and research. For example, `feat(auth): add user authentication module` or `docs(spec): update architecture diagram`.
 
 ### Cross-Worktree Coordination
 
@@ -137,33 +132,33 @@ After completing work, the agent pushes their branch with `git push -u origin fe
 
 ### Worktree Workflow Example
 
-The complete cycle from creating a worktree through cleanup looks like this. Start by creating a worktree from the main repo with `just worktree-new alpha`, which creates a new worktree at `../solar-sim-alpha` with a `feature/alpha` branch. Then change into that directory with `cd ../solar-sim-alpha`.
+The complete cycle from creating a worktree through cleanup looks like this. Start by creating a worktree from the main repo with `just worktree-new alpha`, which creates a new worktree at `../<repo-name>-alpha` with a `feature/alpha` branch. Then change into that directory with `cd ../<repo-name>-alpha`.
 
 Before starting work, check task availability by running `git fetch origin main` followed by `git show main:task-graph.yaml | grep -A5 "status: ready"` to see which tasks are actually available. Pick an unclaimed task and do the implementation work, committing changes as you go with `git add -A && git commit -m "feat(scope): description"`.
 
 When the work is complete, push the branch with `git push -u origin feature/alpha` and create a PR with `gh pr create --title "T-XXX-YY: Brief description" --body "Summary of changes"`. The PR body should describe what changed and include a test plan.
 
-After the PR is reviewed and merged, return to the main worktree with `cd ../solar-sim` and clean up by running `just worktree-remove alpha`. The branch will be deleted automatically since it's been merged.
+After the PR is reviewed and merged, return to the main worktree and clean up by running `just worktree-remove alpha`. The branch will be deleted automatically since it's been merged.
 
 ---
 
 ## Code Standards
 
-TypeScript should use strict mode with explicit return types on exported functions, preferring interface over type for object shapes. Svelte components should use TypeScript via `<script lang="ts">`, prefer composition over inheritance, and stay focused and small.
+TypeScript should use strict mode with explicit return types on exported functions, preferring interface over type for object shapes. If using Svelte, components should use TypeScript via `<script lang="ts">`, prefer composition over inheritance, and stay focused and small.
 
-Testing strategy includes unit tests for calculation modules, integration tests for API routes, and end-to-end tests for critical user flows once the UI exists.
+Testing strategy includes unit tests for core modules, integration tests for API routes, and end-to-end tests for critical user flows once the UI exists.
 
 ---
 
 ## Current Priorities
 
-Check `docs/active/ROADMAP.md` for the latest priorities. The foundation phase focuses on S-002 for DAG parsing and prompt generation since that's the critical path, followed by S-003 for git worktrees and S-001 for the Ralph loop as a stretch goal. Once the workflow tooling is in place, S-004 initializes the SvelteKit project and application features can begin.
+Check `docs/active/ROADMAP.md` for the latest priorities. Early projects will typically start with ideation and specification work before moving into implementation. The ROADMAP document will indicate which phase you're in and what work is active.
 
 ---
 
 ## Troubleshooting
 
-If you see "no package.json found," that's because SvelteKit hasn't been initialized yet, which is tracked in the S-004 story. If "Ralph Loop not yet implemented" appears, the workflow tooling is still being built so check the story status in task-graph.yaml.
+If you see "no package.json found," that may indicate the project hasn't been initialized yet. Check the task graph and ROADMAP to see if initialization is a pending task. If "Ralph Loop not yet implemented" appears, the workflow tooling is still being built so check the story status in task-graph.yaml.
 
 Merge conflicts between worktrees shouldn't happen if each worktree works on a separate branch. Coordinate through clear task assignment in task-graph.yaml, non-overlapping file ownership per story, and regular rebasing onto main.
 

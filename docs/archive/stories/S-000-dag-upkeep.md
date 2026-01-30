@@ -1,8 +1,9 @@
 ---
-id: S-002
-title: DAG Upkeep & Automation
-status: ready
+id: S-000-dag
+title: "[ARCHIVED] DAG Upkeep & Automation"
+status: complete
 priority: 2
+archived: true
 ---
 
 ## Objective
