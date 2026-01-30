@@ -2,6 +2,13 @@
 
 A template project for SvelteKit applications, extracted from the Solar-Sim project. This chassis provides a reusable foundation for building web applications with the Ralph workflow.
 
+## Prerequisites
+
+- [just](https://github.com/casey/just) - Command runner
+- [Bun](https://bun.sh) - Runtime and package manager
+- [Claude Code](https://claude.ai/code) - AI coding assistant
+- [Ralph](https://github.com/snarktank/ralph) - Autonomous loop runner (optional, for `just ralph`)
+
 ---
 
 ## Quick Start
@@ -9,11 +16,11 @@ A template project for SvelteKit applications, extracted from the Solar-Sim proj
 1.  **Clone this template** (or use it to initialize a new repo).
 2.  **Install dependencies**:
     ```bash
-    npm install
+    bun install
     ```
 3.  **Start development**:
     ```bash
-    npm run dev
+    bun run dev
     ```
 
 ## Included Capabilities

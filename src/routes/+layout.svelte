@@ -6,7 +6,7 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>Solar-Sim</title>
+	<title>Ralph Svelte Chassis</title>
 </svelte:head>
 
 {@render children()}

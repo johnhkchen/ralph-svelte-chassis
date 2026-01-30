@@ -5,6 +5,9 @@
 
 set shell := ["bash", "-cu"]
 
+# Bun path (adjust if necessary or add to PATH)
+bun := "/Users/johnchen/.bun/bin/bun"
+
 # Default: show available commands
 default:
     @just --list
@@ -15,7 +18,7 @@ default:
 
 # Install DAG tool dependencies
 install-tools:
-    cd tools && npm install
+    cd tools && {{bun}} install
 
 # ============================================================================
 # AGENT WORKFLOW COMMANDS
@@ -70,15 +73,15 @@ ralph-logs:
 
 # Preview the next available task (read-only, does not claim)
 prompt *args:
-    @node --experimental-strip-types tools/prompt.ts {{args}}
+    @{{bun}} run tools/prompt.ts {{args}}
 
 # Show current DAG status
 dag-status:
-    node --experimental-strip-types tools/dag.ts status
+    {{bun}} run tools/dag.ts status
 
 # Regenerate DAG from document frontmatter
 dag-refresh:
-    node --experimental-strip-types tools/dag.ts refresh
+    {{bun}} run tools/dag.ts refresh
 
 # ============================================================================
 # TASK LIFECYCLE COMMANDS
@@ -86,15 +89,15 @@ dag-refresh:
 
 # Mark a task as complete (runs completion guards)
 task-complete id *args:
-    node --experimental-strip-types tools/dag.ts task-complete {{id}} {{args}}
+    {{bun}} run tools/dag.ts task-complete {{id}} {{args}}
 
 # Reset a task to ready (for recovery from failures)
 task-reset id:
-    node --experimental-strip-types tools/dag.ts task-reset {{id}}
+    {{bun}} run tools/dag.ts task-reset {{id}}
 
 # Show currently claimed task
 prompt-current:
-    @node --experimental-strip-types tools/prompt.ts --current
+    @{{bun}} run tools/prompt.ts --current
 
 # View task audit log (last 20 entries)
 task-audit:
