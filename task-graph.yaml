@@ -45,16 +45,36 @@ milestones:
     title: Climate Integration
     description: Frost dates, growing seasons, and hardiness zones
     status: complete
-stories: []
+stories:
+  - id: S-001
+    title: Audit Codebase (The Gauntlet)
+    status: ready
+    priority: 1
+    path: docs/active/stories/S-001-audit.md
+  - id: S-002
+    title: DAG Upkeep & Automation
+    status: ready
+    priority: 2
+    path: docs/active/stories/S-002-dag-upkeep.md
 nodes:
+  - id: T-001-01
+    title: Inventory & Cleanup Verification
+    story: S-001
+    description: Verify that the codebase and documentation have been correctly scrubbed of "Solar-Sim" domain logic.
+    priority: 1
+    complexity: S
+    status: ready
+    assignee: null
+    path: docs/active/tickets/T-001-01-inventory.md
   - id: T-001-02
     title: Toolchain Verification
     story: S-001
     description: Verify that the development toolchain is fully functional with Bun and the new clean structure.
     priority: 2
     complexity: S
-    status: ready
+    status: complete
     assignee: null
+    completed_at: "2026-01-30T01:20:38.558Z"
     path: docs/active/tickets/T-001-02-toolchain.md
   - id: T-001-03
     title: Agent Signature (Write Verification)
@@ -62,19 +82,9 @@ nodes:
     description: Prove effectively that the agent has write-access and can modify core project files without breaking them.
     priority: 3
     complexity: S
-    status: pending
+    status: ready
     assignee: null
     path: docs/active/tickets/T-001-03-signature.md
-  - id: T-001-01
-    title: Inventory & Cleanup Verification
-    story: S-001
-    description: Verify that the codebase and documentation have been correctly scrubbed of "Solar-Sim" domain logic.
-    priority: 1
-    complexity: S
-    status: complete
-    assignee: null
-    path: docs/active/tickets/T-001-01-inventory.md
-    completed_at: "2026-01-30T02:00:00.000Z"
 edges:
   - from: T-001-01
     to: T-001-02
@@ -85,8 +95,8 @@ meta:
   total_tasks: 3
   total_milestones: 11
   by_status:
-    ready: 1
-    pending: 1
+    ready: 2
+    pending: 0
     in_progress: 0
     complete: 1
     blocked: 0
