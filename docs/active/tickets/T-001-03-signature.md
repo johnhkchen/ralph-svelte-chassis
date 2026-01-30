@@ -2,11 +2,12 @@
 id: T-001-03
 title: Agent Signature (Write Verification)
 story: S-001
-status: pending
+status: ready
 priority: 3
 complexity: S
 type: task
-depends_on: [T-001-02]
+depends_on:
+  - T-001-02
 ---
 
 ## Objective

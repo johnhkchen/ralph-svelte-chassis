@@ -2,11 +2,13 @@
 id: T-001-02
 title: Toolchain Verification
 story: S-001
-status: pending
+status: complete
 priority: 2
 complexity: S
 type: task
-depends_on: [T-001-01]
+depends_on:
+  - T-001-01
+completed_at: "2026-01-30T01:20:38.558Z"
 ---
 
 ## Objective

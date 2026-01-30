@@ -48,24 +48,15 @@ milestones:
 stories:
   - id: S-001
     title: Audit Codebase (The Gauntlet)
-    status: ready
+    status: pending
     priority: 1
     path: docs/active/stories/S-001-audit.md
   - id: S-002
     title: DAG Upkeep & Automation
-    status: ready
+    status: pending
     priority: 2
     path: docs/active/stories/S-002-dag-upkeep.md
 nodes:
-  - id: T-001-01
-    title: Inventory & Cleanup Verification
-    story: S-001
-    description: Verify that the codebase and documentation have been correctly scrubbed of "Solar-Sim" domain logic.
-    priority: 1
-    complexity: S
-    status: ready
-    assignee: null
-    path: docs/active/tickets/T-001-01-inventory.md
   - id: T-001-02
     title: Toolchain Verification
     story: S-001
@@ -85,19 +76,49 @@ nodes:
     status: ready
     assignee: null
     path: docs/active/tickets/T-001-03-signature.md
+  - id: T-002-02
+    title: Drift Detection
+    story: S-002
+    description: Implement drift detection to verify that `task-graph.yaml` matches the state of the filesystem.
+    priority: 3
+    complexity: S
+    status: pending
+    assignee: null
+    path: docs/active/tickets/T-002-02-drift-detection.md
+  - id: T-001-01
+    title: Inventory & Cleanup Verification
+    story: S-001
+    description: Verify that the codebase and documentation have been correctly scrubbed of "Solar-Sim" domain logic.
+    priority: 1
+    complexity: S
+    status: ready
+    assignee: null
+    path: docs/active/tickets/T-001-01-inventory.md
+  - id: T-002-01
+    title: Automate Story Sync
+    story: S-002
+    description: Automate the synchronization of stories from the `docs/active/stories` directory to `task-graph.yaml`.
+    priority: 2
+    complexity: S
+    status: in-progress
+    assignee: null
+    path: docs/active/tickets/T-002-01-story-sync.md
+    claimed_at: "2026-01-30T01:24:27.391Z"
 edges:
   - from: T-001-01
     to: T-001-02
   - from: T-001-02
     to: T-001-03
+  - from: T-002-01
+    to: T-002-02
 meta:
-  total_stories: 0
-  total_tasks: 3
+  total_stories: 2
+  total_tasks: 5
   total_milestones: 11
   by_status:
     ready: 2
-    pending: 0
-    in_progress: 0
+    pending: 1
+    in_progress: 1
     complete: 1
     blocked: 0
   by_priority: {}
